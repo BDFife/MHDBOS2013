@@ -1,4 +1,4 @@
-MHDBOS2013
-==========
+# Collector
 
-"Collector" project for MHDBOS2013
+
+"Collector" project for Music Hack Day Boston 2013
