@@ -5,7 +5,7 @@ from flask import Flask, request, redirect, url_for, render_template
 from artists import extract_artists
 from discographies import discography_filter
 from discographies import get_missing_albums
-from potpourri import get_relevant_awards, spektor_guests, progress_on_award
+from potpourri import get_relevant_awards, progress_on_award
 
 app = Flask(__name__)
 
@@ -14,18 +14,24 @@ def upload_file():
     # The POST code gets called when a file (iTunes XML)
     # is uploaded.
     if request.method == 'POST':
-        file = request.files['file']
-        data_struct = extract_artists(file)
-        # Attempt to show missing albums from user catalog for filters
-        return str(progress_on_award(data_struct, spektor_guests))
-        # Shows potpourri filters matching user catalog
-        #return str(get_relevant_awards(data_struct))
-        # Shows albums missing from matched "discography list"
-        #return str(get_missing_albums(data_struct))
-        # Returns matches between iTunes library and "discography" list
-        #return str(discography_filter(data_struct))
-        # Returns the structured data in JSON format
-        #return str(data_struct)
+        iTunes_xml = request.files['file']
+        
+        # Note, this is the biggest performance hit when 
+        # processing. Largely due to the plist parser
+        iTunes_json = extract_artists(iTunes_xml)
+
+        # Pull missing albums from user catalog via discography
+        discography_gaps = get_missing_albums(iTunes_json)
+        
+        award_status = {}
+        # Find relevant awards and make it awesome
+        for award in get_relevant_awards(iTunes_xml):
+            award_status[award['award_name']] = progress_on_award(iTunes_json, award)
+
+        return render_template("results.html", itunes=iTunes_json, 
+                                               discog=discography_gaps,
+                                               awards=award_status)
+
     # Otherwise the 'home page' is shown that prompts the
     # user to upload their iTunes XML file. 
     else:
