@@ -59,10 +59,17 @@ def get_missing_albums(itunes_data):
         # a list, not a dict, at this point. 
         total_albums = discographies[artist]
 
+        # return the list of albums in the discography list but 
+        # missing from the owned albums list
         missing_albums = list(set(total_albums).difference(set(owned_albums)))
-        
-        tracklist[artist] = { 'owned':owned_albums,
-                              'missing':missing_albums }
+        # albums in the discography list and the owned albums list
+        canonical = list(set(owned_albums).intersection(set(total_albums)))
+        # albums in the owned albums list but not discography
+        other = list(set(owned_albums).difference(set(canonical)))
+
+        tracklist[artist] = { 'owned':canonical,
+                              'missing':missing_albums,
+                              'other':other }
 
     return tracklist
 
