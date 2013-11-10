@@ -7,6 +7,7 @@ a delightful mix of fun matching filters for music and stuff
 
 star_trek_sings = {
     "award_name":"In space, no-one can hear you sing",
+    "notes": "Undiscovered country.",
     "music": {
         "Leonard Nimoy": ["Leonard Nimoy Presents Mr. Spock's Music \
                            from Outer Space",
@@ -25,6 +26,7 @@ star_trek_sings = {
 spektor_guests = {
     "award_name":"Albums where Regina Spektor has one or more \
                 featured tracks",
+    "notes": "You may not have known.",
     "music": { 
         "Anders Griffen": ["All Over the Place",
                            "Ox"],
@@ -37,12 +39,14 @@ spektor_guests = {
 }
 
 vampires = {
-    
-   "award_name":"References to Vampires",
-   "music": {
+    "award_name":"Albums include tracks about vampires",
+    "notes": "We know you care.",
+    "music": {
         "The Mountain Goats": ["All Eternals Deck"],
         "Bauhaus": ["Crackle: The Best Of Bauhaus"],
-        "Allen Sherman": ["Dr. Demento Presents: Spooky Tunes & Scary Melodies"]}
+        "Allen Sherman": ["Dr. Demento Presents: Spooky Tunes & Scary Melodies"],
+        "Misfits": ["Walk Among Us"],
+        "Bad Brains": ["Bad Brains"]}
 }
 
 potpourri_filters = [star_trek_sings, spektor_guests, vampires]
