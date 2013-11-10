@@ -5,10 +5,6 @@ from flask import Flask, request, redirect, url_for, render_template
 from werkzeug import secure_filename
 import artists
 
-
-UPLOAD_FOLDER = '~/Projects/Collector'
-ALLOWED_EXTENSIONS = set(['xml'])
-
 app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
