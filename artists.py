@@ -13,32 +13,6 @@ import re       # for regular expressions
 import sys      # for error info
 import json
 
-# Substitution for user environment variable for /Users/<name>
-from os.path import expanduser
-home = expanduser("~")
-
-debug = True
-
-# Need to determine current system to build path to iTunes Library file # (only runs on Mac OS and Windows) (Not tested on Windows yet.)
-import platform
-os = platform.system() 
-
-if len(sys.argv) < 2:
-    if re.search("Darwin", os):
-        # if debug: print "os is Darwin. Home is " + home
-        # No need for shell-type escape for spaces in path or name
-        xml_file = home + '/Music/iTunes/iTunes Music Library.xml'
-    elif re.search("Windows", os):
-        release = platform.release()
-        if re.search('XP', release):
-            xml_file = home + '\My Documents\My Music\iTunes\iTunes Library.xml'
-        else:
-            # Windows Vista, 7, & 8
-            xml_file = home + '\Music\iTunes\iTunes Library.xml'
-    else:
-        if debug: print "Sorry, but this program uses iTunes data which we don't think is available on this " + os + " system"
-else:
-    xml_file = sys.argv[1]
 
 # Protection from undecodable utf-8 in plists is from
 # http://stackoverflow.com/questions/18275020/
@@ -60,67 +34,99 @@ def safe_unicode(s):
     else:
         return s
 
-#def set_up_dict ():
+def extract_artists(xml):
+
+	source_data = {}
+	#source_names = ['track_artist', 'track_name', 'track_album']
+
+	unicode_errors = 0
+
+	# For each entry in the iTunes library, extract the artist-> album-> 
+	# track data, and build a dictionary "music" with cascading dicts.
 
 
-try:
-   xml = plistlib.readPlist(xml_file)    
-except IOError:
-   if debug: print 'Problem opening ' + os + ' iTunes file ' + xml_file
+	music = {}
 
-try:
-   artists_file = open('artists_data.json', 'w')
-except IOError:
-   if debug: print 'Problem opening artists_data.json'
-
-source_data = {}
-#source_names = ['track_artist', 'track_name', 'track_album']
-
-unicode_errors = 0
-
-# For each entry in the iTunes library, extract the artist-> album-> 
-# track data, and build a dictionary "music" with cascading dicts.
-
-
-music = {}
-
-# The try loop catches unconvertable char problems such as multibyte 
-# languages and symbols.
+	# The try loop catches unconvertable char problems such as multibyte 
+	# languages and symbols.
  
-for track in xml['Tracks']:
-    try:
-		info = xml['Tracks'][track]
-		# if debug: print "Info = " + info['Name']
+	for track in xml['Tracks']:
+		try:
+			info = xml['Tracks'][track]
+			# if debug: print "Info = " + info['Name']
 
-		track_artist = safe_unicode(info['Album Artist'])
-		if debug: print "Artist = " + track_artist
+			track_artist = safe_unicode(info['Album Artist'])
+			if debug: print "Artist = " + track_artist
 
-		track_name = safe_unicode(info['Name'])
-		if debug: print "Track = " + track_name
+			track_name = safe_unicode(info['Name'])
+			if debug: print "Track = " + track_name
 
-		track_album = safe_unicode(info['Album'])
-		if debug: print "Album = " + track_album
+			track_album = safe_unicode(info['Album'])
+			if debug: print "Album = " + track_album
 
-		if track_artist in music: 
-			if track_album in music[track_artist]:
-				music[track_artist][track_album].append(track_name)
+			if track_artist in music: 
+				if track_album in music[track_artist]:
+					music[track_artist][track_album].append(track_name)
+				else:
+					# this case should never get exercised
+					music[track_artist][track_album] = [track_name]
 			else:
-				# this case should never get exercised
-				music[track_artist][track_album] = [track_name]
+				music[track_artist] = { track_album:[track_name] }
+		except UnicodeError:
+			if debug: print "Couldn't convert a character in a track name " + info['Name']
+			unicode_errors += 1
+
+		except KeyError:
+			if debug: print "Couldn't find data for track " + source_data['track_name'] if 'track_name' in source_data else ''
+
+	if debug: print music 
+	if debug: print "Unicode conversion failures: ", unicode_errors
+	return music
+
+if __name__ == "__main__":	
+
+	# Substitution for user environment variable for /Users/<name>
+	from os.path import expanduser
+	home = expanduser("~")
+
+	debug = True
+
+	# Need to determine current system to build path to iTunes Library file # (only runs on Mac OS and Windows) (Not tested on Windows yet.)
+	import platform
+	os = platform.system() 
+
+	if len(sys.argv) < 2:
+		if re.search("Darwin", os):
+			# if debug: print "os is Darwin. Home is " + home
+			# No need for shell-type escape for spaces in path or name
+			xml_file = home + '/Music/iTunes/iTunes Music Library.xml'
+		elif re.search("Windows", os):
+			release = platform.release()
+			if re.search('XP', release):
+				xml_file = home + '\My Documents\My Music\iTunes\iTunes Library.xml'
+			else:
+				# Windows Vista, 7, & 8
+				xml_file = home + '\Music\iTunes\iTunes Library.xml'
 		else:
-			music[track_artist] = { track_album:[track_name] }
-    except UnicodeError:
-        if debug: print "Couldn't convert a character in a track name " + info['Name']
-        unicode_errors += 1
+			print "Sorry, but this program uses iTunes data which we don't think is available on this " + os + " system"
+	else:
+		xml_file = sys.argv[1]
+		
+	try:
+	   xml = plistlib.readPlist(xml_file)    
+	except IOError:
+	   if debug: print 'Problem opening ' + os + ' iTunes file ' + xml_file
 
-    except KeyError:
-        if debug: print "Couldn't find data for track " + source_data['track_name'] if 'track_name' in source_data else ''
+	music = extract_artists(xml)
 
-print music 
-
-json.dump(music, artists_file, indent=4)
+	try:
+	   artists_file = open('artists_data.json', 'w')
+	except IOError:
+	   if debug: print 'Problem opening artists_data.json'
+		
+	json.dump(music, artists_file, indent=4)
  
-artists_file.close()
- 
-if debug: print "Unicode conversion failures: ", unicode_errors
-
+	artists_file.close()
+ 		
+	
+	
