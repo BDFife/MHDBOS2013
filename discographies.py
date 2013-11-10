@@ -33,7 +33,16 @@ discographies = {
                     "Abbey Road",
                     "Let It Be"],
     # Pearl Jam entry is incomplete for now.
-    "Pearl Jam": ["Ten",]
+    "Pearl Jam":    ["Ten",],
+    "Led Zeppelin": ["Led Zeppelin",
+                     "Led Zeppelin II",
+                     "Led Zeppelin III",
+                     "Led Zeppelin IV",
+                     "Houses of the Holy",
+                     "Physical Graffiti",
+                     "Presence",
+                     "In Through the Out Door",
+                     "Coda"]
 }
 
 
