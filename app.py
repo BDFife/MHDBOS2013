@@ -8,27 +8,16 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
+    # The POST code gets called when a file (iTunes XML)
+    # is uploaded.
     if request.method == 'POST':
         file = request.files['file']
-       	#mybuffer = file.readlines()
         data_struct = extract_artists(file)
         return str(data_struct)
-
-    return '''
-    <!doctype html>
-    <title>Upload new File</title>
-    <h1>Upload new File</h1>
-    <form action="" method=post enctype=multipart/form-data>
-      <p><input type=file name=file>
-         <input type=submit value=Upload>
-    </form>
-    '''
-	
-"""
-@app.route("/")
-def check_template():
-	return render_template("index.html")
-"""
+    # Otherwise the 'home page' is shown that prompts the
+    # user to upload their iTunes XML file. 
+    else:
+        return render_template("index.html")
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
