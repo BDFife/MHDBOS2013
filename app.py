@@ -5,6 +5,7 @@ from flask import Flask, request, redirect, url_for, render_template
 from artists import extract_artists
 from discographies import discography_filter
 from discographies import get_missing_albums
+from potpourri import get_relevant_awards, spektor_guests, progress_on_award
 
 app = Flask(__name__)
 
@@ -15,7 +16,9 @@ def upload_file():
     if request.method == 'POST':
         file = request.files['file']
         data_struct = extract_artists(file)
-        return str(get_missing_albums(data_struct))
+        return str(progress_on_award(data_struct, spektor_guests))
+        #return str(get_relevant_awards(data_struct))
+        #return str(get_missing_albums(data_struct))
         #return str(discography_filter(data_struct))
         #return str(data_struct)
     # Otherwise the 'home page' is shown that prompts the
