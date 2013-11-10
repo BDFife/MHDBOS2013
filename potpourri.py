@@ -58,11 +58,17 @@ def progress_on_award(itunes_data, award):
                 # if the album is in the library
                 if itunes_data[artist].get(album):
                     # add it to the 'owned' dict
-                    # !!!There is a bug with Ben Folds here (spektor list) whre it doesn't show up properly. This can be debugged by removing the [] below 
-                    albums_owned[artist] = albums_owned.get(artist,[]).append(album)
+                    if artist in albums_owned: 
+                        albums_owned[artist].append(album)
+                    else: 
+                        albums_owned[artist] = [album,]
                 else:
                     # add it to the 'needed' dict
-                    albums_needed[artist] = albums_needed.get(artist,[]).append(album)
+                    if artist in albums_needed: 
+                        albums_needed[artist].append(album)
+                    else: 
+                        albums_needed[artist] = [album,]
+
         else:
             albums_needed[artist] = award['music'][artist]
     return {'needed':albums_needed,
