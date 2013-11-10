@@ -36,7 +36,16 @@ spektor_guests = {
         "Nickel Eye":["The Time of the Assassins"] }
 }
 
-potpourri_filters = [star_trek_sings, spektor_guests]
+vampires = {
+    
+   "award_name":"References to Vampires",
+   "music": {
+        "The Mountain Goats": ["All Eternals Deck"],
+        "Bauhaus": ["Crackle: The Best Of Bauhaus"],
+        "Allen Sherman": ["Dr. Demento Presents: Spooky Tunes & Scary Melodies"]}
+}
+
+potpourri_filters = [star_trek_sings, spektor_guests, vampires]
 
 def get_relevant_awards(itunes_data):
     user_list = potpourri_filters
@@ -74,3 +83,4 @@ def progress_on_award(itunes_data, award):
     return {'needed':albums_needed,
             'owned':albums_owned}
 
+    
