@@ -1,19 +1,65 @@
 <html>
   <head>
     <title>Music Collector's Helper</title>
+
+    <script language=javascript type='text/javascript'>
+      function toggle_visibility(id) {
+        var e document.getElementById(id);
+        if (e.style.display == 'block')
+          e.style.display = 'none';
+        else
+          e.style.display = 'block';
+      }
+    </script>
+
   </head>
 
   <body>
-    <p></p>
-  
-    <H1>Music You Need To Get </H1>
-      {{discog}}
+    <p>We've used our music-analyze-o-tron to study your iTunes
+    library</p>
+
+    
+    <H1>Albums you need to complete a discography:</H1>
+    {% for artist in discog %}
+      <H2>{{artist}}</H2>
+        <H3>Missing</H3>
+          {% for album in discog[artist]['missing'] %}
+            <p>{{album}}</p>
+          {% endfor %}
+        <H3>Owned:</H3>
+          <p>
+          {% for album in discog[artist]['owned'] %}
+            {{album}},
+          {% endfor %}
+          </p>
+        <H3>Junk you own (or mismatches)</H3>
+          <p>
+          {% for album in discog[artist]['other'] %}
+            {{album}},
+          {% endfor %}
+          </p>
+    {% endfor %}
     
     <H1>Awesome Awards</H1>
-      {{awards}}
-
-    <H1>Stuff You Have</H1>
-      {{itunes}}
+    {% for award in awards.keys() %}
+      <H2>{{award}}</H2>
+      <H3>Missing:</H3>
+        {% for artist in awards[award]['needed'].keys() %}
+        <p>{{artist}}:
+          {% for album in awards[award]['needed'][artist] %}
+           {{album}}, 
+          {% endfor %}
+        </p>
+        {% endfor %}
+      <H3>Owned:</H3>
+        {% for artist in awards[award]['owned'].keys() %}      
+          <p>{{artist}}:
+            {% for album in awards[award]['owned'][artist] %}
+              {{album}},
+            {% endfor %}
+        </p>
+        {% endfor %}
+    {% endfor %}
 
  </body>
 </html>
