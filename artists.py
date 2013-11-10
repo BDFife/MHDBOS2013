@@ -34,7 +34,13 @@ def safe_unicode(s):
     else:
         return s
 
-def extract_artists(xml):
+def extract_artists(xml_file, debug=False):
+
+	try:
+	   xml = plistlib.readPlist(xml_file)    
+	except IOError:
+	   if debug: print 'Problem opening ' + os + ' iTunes file ' + xml_file
+
 
 	source_data = {}
 	#source_names = ['track_artist', 'track_name', 'track_album']
@@ -112,12 +118,7 @@ if __name__ == "__main__":
 	else:
 		xml_file = sys.argv[1]
 		
-	try:
-	   xml = plistlib.readPlist(xml_file)    
-	except IOError:
-	   if debug: print 'Problem opening ' + os + ' iTunes file ' + xml_file
-
-	music = extract_artists(xml)
+	music = extract_artists(xml, debug=debug)
 
 	try:
 	   artists_file = open('artists_data.json', 'w')

@@ -2,8 +2,7 @@
 
 import os
 from flask import Flask, request, redirect, url_for, render_template
-from werkzeug import secure_filename
-import artists
+from artists import extract_artists
 
 app = Flask(__name__)
 
@@ -11,8 +10,10 @@ app = Flask(__name__)
 def upload_file():
     if request.method == 'POST':
         file = request.files['file']
-       	mybuffer = file.readlines()
-        return str(mybuffer)
+       	#mybuffer = file.readlines()
+        data_struct = extract_artists(file)
+        return str(data_struct)
+
     return '''
     <!doctype html>
     <title>Upload new File</title>
