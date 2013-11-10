@@ -25,9 +25,8 @@ def upload_file():
         
         award_status = {}
         # Find relevant awards and make it awesome
-        for award in get_relevant_awards(iTunes_xml):
+        for award in get_relevant_awards(iTunes_json):
             award_status[award['award_name']] = progress_on_award(iTunes_json, award)
-
         return render_template("results.html", itunes=iTunes_json, 
                                                discog=discography_gaps,
                                                awards=award_status)
