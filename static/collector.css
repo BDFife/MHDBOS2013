@@ -1,0 +1,70 @@
+
+body {
+  /* the text-align forces the .main div to be centered. */
+  text-align: left;
+}
+      
+.main {
+  color: black;
+  /*width: 400px;*/
+  margin: auto;
+  padding: 2em;
+  border-radius:20px;
+  background-color: #fefefe;
+  text-align: center;
+  display: inline-block;
+  float: none;
+}
+
+h1 {
+  color: grey;
+  
+}
+
+h2 {
+  text-align: center;
+}
+
+.headline {
+  text-align: center;
+}
+
+.footer {
+  text-align: center;
+}
+img {
+  margin: auto;
+  display: block;
+}
+
+a:link {
+  color: #0f651f;
+  text-decoration: none;
+}
+
+a:visited {
+color: #0f651f;
+text-decoration: none;
+}
+
+a:hover {
+  color: #29a61a;
+  background-color: #ebecec;
+  border-radius: 10px;
+}
+
+a.rovilink:link {
+  color: #ab2c2c;
+  text-decoration: none;
+}
+
+a.rovilink:visited {
+  color: #ab2c2c;
+  text-decoration: none;
+}
+
+a.rovilink:hover {
+  color: #f11515;
+  background-color: #ebecec;
+  border-radius: 10px;
+}
