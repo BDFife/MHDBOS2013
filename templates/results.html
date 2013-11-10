@@ -11,17 +11,18 @@
           e.style.display = 'block';
       }
     </script>
-
   </head>
 
   <body>
+
     <p>We've used our music-analyze-o-tron to study your iTunes
     library</p>
 
     
     <H1>Albums you need to complete a discography:</H1>
     {% for artist in discog %}
-      <H2>{{artist}}</H2>
+      <H2>{{artist}} ({{discog[artist]['owned']|length}}
+          of {{full_discog[artist]|length}})</H2>
         <H3>Missing</H3>
           {% for album in discog[artist]['missing'] %}
             <p>{{album}}</p>
@@ -32,12 +33,15 @@
             {{album}},
           {% endfor %}
           </p>
+
+<!--
         <H3>Junk you own (or mismatches)</H3>
           <p>
           {% for album in discog[artist]['other'] %}
             {{album}},
           {% endfor %}
           </p>
+-->
     {% endfor %}
     
     <H1>Awesome Awards</H1>
