@@ -16,10 +16,15 @@ def upload_file():
     if request.method == 'POST':
         file = request.files['file']
         data_struct = extract_artists(file)
+        # Attempt to show missing albums from user catalog for filters
         return str(progress_on_award(data_struct, spektor_guests))
+        # Shows potpourri filters matching user catalog
         #return str(get_relevant_awards(data_struct))
+        # Shows albums missing from matched "discography list"
         #return str(get_missing_albums(data_struct))
+        # Returns matches between iTunes library and "discography" list
         #return str(discography_filter(data_struct))
+        # Returns the structured data in JSON format
         #return str(data_struct)
     # Otherwise the 'home page' is shown that prompts the
     # user to upload their iTunes XML file. 
