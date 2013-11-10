@@ -29,3 +29,6 @@ make automated creation of the filters easier.
 
 To restart the server, remember to use the command:
    'sudo reload collector'
+
+In "production", NGINX.conf needs to be modified (client_max_body_size)
+to allow large-ish iTunes XML files to be uploaded.
