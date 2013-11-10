@@ -40,3 +40,6 @@ nosetests.xml
 *~
 .#*
 \#*\#
+
+# Project-specific files
+artists_data.json
