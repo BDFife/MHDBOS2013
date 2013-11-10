@@ -12,6 +12,10 @@ filters that identify albums missing from your collection of favorite
 artists, and helps identify other interesting characteristics of your
 collection and guide your next purchases. 
 
+iTunes file parsing seems to run quite slow (~5-10s) for large iTunes
+files... but this seems to be a limitation of the plist parser and as 
+such, not easily addressable. 
+
 ## Out Of Scope
 
 For this weekend hack, we are not attempting to match the albums
