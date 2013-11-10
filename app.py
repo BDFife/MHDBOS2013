@@ -3,6 +3,8 @@
 import os
 from flask import Flask, request, redirect, url_for, render_template
 from artists import extract_artists
+from discographies import discography_filter
+from discographies import get_missing_albums
 
 app = Flask(__name__)
 
@@ -13,7 +15,9 @@ def upload_file():
     if request.method == 'POST':
         file = request.files['file']
         data_struct = extract_artists(file)
-        return str(data_struct)
+        return str(get_missing_albums(data_struct))
+        #return str(discography_filter(data_struct))
+        #return str(data_struct)
     # Otherwise the 'home page' is shown that prompts the
     # user to upload their iTunes XML file. 
     else:
