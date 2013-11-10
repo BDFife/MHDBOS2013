@@ -29,7 +29,7 @@
           of {{full_discog[artist]|length}})</H2>
         <H3>Missing</H3>
           {% for album in discog[artist]['missing'] %}
-            <p>{{album}}</p>
+            {{album}}<br>
           {% endfor %}
         <H3>Owned:</H3>
           <p>
@@ -53,19 +53,19 @@
       <H2>{{award}}</H2>
       <H3>Missing:</H3>
         {% for artist in awards[award]['needed'].keys() %}
-        <p>{{artist}}:
+        {{artist}}:
           {% for album in awards[award]['needed'][artist] %}
            {{album}}, 
           {% endfor %}
-        </p>
+        <br>
         {% endfor %}
       <H3>Owned:</H3>
         {% for artist in awards[award]['owned'].keys() %}      
-          <p>{{artist}}:
+          {{artist}}:
             {% for album in awards[award]['owned'][artist] %}
               {{album}},
             {% endfor %}
-        </p>
+        <br>
         {% endfor %}
     {% endfor %}
 
