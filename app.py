@@ -3,6 +3,7 @@
 import os
 from flask import Flask, request, redirect, url_for, render_template
 from artists import extract_artists
+from discographies import discographies
 from discographies import discography_filter
 from discographies import get_missing_albums
 from potpourri import get_relevant_awards, progress_on_award
@@ -29,7 +30,8 @@ def upload_file():
             award_status[award['award_name']] = progress_on_award(iTunes_json, award)
         return render_template("results.html", itunes=iTunes_json, 
                                                discog=discography_gaps,
-                                               awards=award_status)
+                                               awards=award_status,
+                                               full_discog=discographies )
 
     # Otherwise the 'home page' is shown that prompts the
     # user to upload their iTunes XML file. 
